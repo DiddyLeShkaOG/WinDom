@@ -209,62 +209,79 @@
     © 2025 WinDom. Все права защищены.
   </footer>
 
-  <!-- Чат-бот -->
-  <div id="chat-bot">
-    <div id="chat-messages"></div>
-    <input type="text" id="chat-input" placeholder="Задайте вопрос..." />
-    <button onclick="sendMessage()">Отправить</button>
+<!-- Кнопка открытия -->
+<button id="reopen-chat" title="Открыть чат" style="position: fixed; bottom: 20px; right: 20px; background: #0078d7; color: white; border: none; border-radius: 50%; width: 50px; height: 50px; font-size: 24px; cursor: pointer; z-index: 10000;">💬</button>
+
+<!-- Чат-бот -->
+<div id="chat-bot" style="display: none; position: fixed; bottom: 20px; right: 20px; width: 300px; background: white; border: 1px solid #ccc; border-radius: 10px; padding: 10px; font-family: Arial, sans-serif; box-shadow: 0 0 10px rgba(0,0,0,0.2); z-index: 9999;">
+  <!-- Кнопка закрытия -->
+  <button id="chat-close" title="Закрыть" style="position: absolute; top: 5px; right: 10px; background: none; border: none; font-size: 18px; cursor: pointer;">✖️</button>
+
+  <div id="chat-messages" style="height: 200px; overflow-y: auto; margin-bottom: 10px; font-size: 14px; display: flex; flex-direction: column;"></div>
+  <div style="display: flex; gap: 5px;">
+    <input type="text" id="chat-input" placeholder="Задайте вопрос..." style="flex: 1; padding: 5px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;" />
+    <button onclick="sendMessage()" style="padding: 5px 10px; background-color: #0078d7; color: white; border: none; border-radius: 4px; cursor: pointer;">Отправить</button>
   </div>
+</div>
 
-  <script>
-    const chatMessages = document.getElementById('chat-messages');
-    const chatInput = document.getElementById('chat-input');
+<script>
+  const chatBot = document.getElementById('chat-bot');
+  const chatInput = document.getElementById('chat-input');
+  const chatMessages = document.getElementById('chat-messages');
+  const reopenChatBtn = document.getElementById('reopen-chat');
+  const chatCloseBtn = document.getElementById('chat-close');
 
-    function appendMessage(text, fromBot = false) {
-      const msgDiv = document.createElement('div');
-      msgDiv.textContent = text;
-      msgDiv.style.margin = '8px 0';
-      msgDiv.style.padding = '8px';
-      msgDiv.style.borderRadius = '8px';
-      msgDiv.style.maxWidth = '80%';
-      msgDiv.style.wordWrap = 'break-word';
-      msgDiv.style.backgroundColor = fromBot ? '#0078d7' : '#eee';
-      msgDiv.style.color = fromBot ? 'white' : 'black';
-      msgDiv.style.alignSelf = fromBot ? 'flex-start' : 'flex-end';
-      msgDiv.style.marginLeft = fromBot ? '0' : 'auto';
-      chatMessages.appendChild(msgDiv);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
+  function appendMessage(text, fromBot = false) {
+    const msgDiv = document.createElement('div');
+    msgDiv.textContent = text;
+    msgDiv.style.margin = '8px 0';
+    msgDiv.style.padding = '8px';
+    msgDiv.style.borderRadius = '8px';
+    msgDiv.style.maxWidth = '80%';
+    msgDiv.style.wordWrap = 'break-word';
+    msgDiv.style.backgroundColor = fromBot ? '#0078d7' : '#eee';
+    msgDiv.style.color = fromBot ? 'white' : 'black';
+    msgDiv.style.alignSelf = fromBot ? 'flex-start' : 'flex-end';
+    msgDiv.style.marginLeft = fromBot ? '0' : 'auto';
+    chatMessages.appendChild(msgDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function sendMessage() {
+    const userText = chatInput.value.trim();
+    if (!userText) return;
+    appendMessage(userText, false);
+    chatInput.value = '';
+
+    setTimeout(() => {
+      let botReply = 'Извините, я пока не умею отвечать на этот вопрос.';
+      const userLower = userText.toLowerCase();
+      if (userLower.includes('цена')) botReply = 'Цены на окна указаны рядом с каждым товаром.';
+      else if (userLower.includes('доставка')) botReply = 'Доставка по Молдове бесплатная при заказе от 3 окон.';
+      else if (userLower.includes('замер')) botReply = 'Наш специалист свяжется с вами для бесплатного замера.';
+      else if (userLower.includes('спасибо')) botReply = 'Спасибо вам! Рады помочь!';
+      appendMessage(botReply, true);
+    }, 800);
+  }
+
+  // Enter — отправка
+  chatInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      sendMessage();
     }
+  });
 
-    function sendMessage() {
-      const userText = chatInput.value.trim();
-      if (!userText) return;
-      appendMessage(userText, false);
-      chatInput.value = '';
+  // Кнопка открыть чат
+  reopenChatBtn.addEventListener('click', () => {
+    chatBot.style.display = 'block';
+    reopenChatBtn.style.display = 'none';
+    chatInput.focus();
+  });
 
-      // Пример простого ответа бота
-      setTimeout(() => {
-        let botReply = 'Извините, я пока не умею отвечать на этот вопрос.';
-        const userLower = userText.toLowerCase();
-        if (userLower.includes('цена')) botReply = 'Цены на окна указаны рядом с каждым товаром.';
-        else if (userLower.includes('доставка')) botReply = 'Доставка по Молдове бесплатная при заказе от 3 окон.';
-        else if (userLower.includes('замер')) botReply = 'Наш специалист свяжется с вами для бесплатного замера.';
-        else if (userLower.includes('спасибо')) botReply = 'Спасибо вам! Рады помочь!';
-        appendMessage(botReply, true);
-      }, 800);
-    }
-
-    // Отправка по Enter
-    chatInput.addEventListener('keydown', e => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        sendMessage();
-      }
-    });
-  </script>
-
-</body>
-</html>
-
-
-
+  // Кнопка закрыть чат
+  chatCloseBtn.addEventListener('click', () => {
+    chatBot.style.display = 'none';
+    reopenChatBtn.style.display = 'block';
+  });
+</script>
