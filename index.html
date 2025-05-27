@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>WinDom — Окна, через которые начинается дом</title>
+  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script defer src="script.js"></script>
+  <style>
+    /* Чат-бот стили */
+    #chat-bot {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 300px;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 10px;
+      font-family: Arial, sans-serif;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      z-index: 9999;
+    }
+    #chat-messages {
+      height: 200px;
+      overflow-y: auto;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    #chat-input {
+      width: 70%;
+      padding: 5px;
+      box-sizing: border-box;
+    }
+    #chat-bot button {
+      width: 25%;
+      padding: 5px;
+      cursor: pointer;
+      background-color: #0078d7;
+      border: none;
+      color: white;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+    #chat-bot button:hover {
+      background-color: #005fa3;
+    }
+
+    /* Товары */
+    .products {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      padding: 20px 0;
+    }
+    .product {
+      background: white;
+      padding: 15px;
+      width: 250px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .product img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+    }
+    .product h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+    .product p {
+      font-size: 18px;
+      margin: 0 0 15px;
+    }
+    .product s {
+      color: #888;
+      font-size: 14px;
+      margin-left: 8px;
+    }
+    .buy-btn {
+      background-color: #28a745;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+    .buy-btn:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>WinDom</h1>
+    <p>Окна, через которые начинается дом</p>
+    <nav>
+      <a href="index.html">Главная</a>
+      <a href="support.html">Поддержка</a>
+      <a href="help.html">Справка</a>
+      <a href="register.html">Регистрация</a>
+      <a href="about.html">О нас</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="promo" style="background:#ffe600; text-align:center; padding:15px; font-weight:bold;">
+      Бесплатный замер + установка в подарок!
+    </section>
+
+    <section class="products">
+      <div class="product">
+        <h3>Окно ПВХ 120x140</h3>
+        <img src="https://avatars.mds.yandex.net/get-altay/1363250/2a00000162d4693000b7c4b4236f06b369c6/XXL_height" alt="Окно ПВХ 120x140" />
+        <p>6990 ₽ <s>13990 ₽</s></p>
+        <button class="buy-btn">🛒 Купить</button>
+      </div>
+      <div class="product">
+        <h3>Окно с двойным стеклопакетом</h3>
+        <img src="https://avatars.dzeninfra.ru/get-zen_doc/62191/pub_5c3da1bfa6047e00ac32f042_5c3da5c411006c00aae0e55b/scale_1200" alt="Окно с двойным стеклопакетом" />
+        <p>8490 ₽ <s>16990 ₽</s></p>
+        <button class="buy-btn">🛒 Купить</button>
+      </div>
+      <div class="product">
+        <h3>Балконный блок</h3>
+        <img src="https://avatars.mds.yandex.net/get-altay/13229524/2a0000018f7627beda1589571c036db75c9c/XXXL" alt="Балконный блок" />
+        <p>9990 ₽ <s>18500 ₽</s></p>
+        <button class="buy-btn">🛒 Купить</button>
+      </div>
+    </section>
+
+    <form>
+      <h2>Оставить заявку</h2>
+      <input type="text" placeholder="Ваше имя" required />
+      <input type="tel" placeholder="Телефон" required />
+      <button type="submit">Получить консультацию</button>
+    </form>
+
+    <div class="messenger-links" style="padding:20px; font-size:16px;">
+      <p><a href="https://t.me/твой_юзернейм" target="_blank">Telegram</a> — +37377877934</p>
+      <p><a href="viber://chat?number=+37377877934" target="_blank">Viber</a> — +37377877934</p>
+    </div>
+
+    <section class="contact-form">
+      <div class="review-form" style="background: rgba(0,0,0,0.7); color: white; padding: 30px; border-radius: 20px; max-width: 700px; margin: 50px auto; text-align:center;">
+        <h3>Оставьте отзыв о нашей работе</h3>
+        <input type="text" placeholder="Ваше имя" required style="width:90%; padding:15px; margin:15px 0; border-radius:10px; border:none; font-size:18px;" />
+        <textarea placeholder="Ваш отзыв..." rows="6" required style="width:90%; padding:15px; margin:15px 0; border-radius:10px; border:none; font-size:18px; resize:none;"></textarea>
+        <select style="width:90%; padding:15px; margin:15px 0; border-radius:10px; font-size:18px;">
+          <option disabled selected>Оцените нас</option>
+          <option>⭐⭐⭐⭐⭐ Отлично</option>
+          <option>⭐⭐⭐⭐ Хорошо</option>
+          <option>⭐⭐⭐ Нормально</option>
+          <option>⭐⭐ Плохо</option>
+          <option>⭐ Ужасно</option>
+        </select>
+        <button style="background:#00cc88; color:white; font-size:20px; padding:14px 30px; border:none; border-radius:12px; cursor:pointer; margin-top:15px; transition: background 0.3s;">Отправить отзыв</button>
+      </div>
+
+      <h3 style="text-align:center; margin-top:50px;">Мы на карте</h3>
+      <iframe src="https://www.google.com/maps/embed?pb=..." width="100%" height="300" style="border:0;" allowfullscreen></iframe>
+
+      <div class="faq" style="max-width: 700px; margin: 40px auto;">
+        <h2>Часто задаваемые вопросы</h2>
+        <div class="faq-item">
+          <strong>Сколько стоит установка?</strong>
+          <p>Установка входит в стоимость окна. Никаких доплат.</p>
+        </div>
+        <div class="faq-item">
+          <strong>Сколько по времени ждать?</strong>
+          <p>Замер — в течение 24 часов, установка — от 2 до 7 дней.</p>
+        </div>
+      </div>
+    </section>
+
+    <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' });" class="to-top" style="position: fixed; bottom: 20px; right: 20px; background: black; color: white; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-size: 18px; z-index: 10000;">↑ Наверх</button>
+
+    <section class="quality-ui" style="max-width: 800px; margin: 50px auto; padding: 30px; background-color: rgba(0,0,0,0.7); color: white; border-radius: 20px; font-size: 18px;">
+      <h3 style="text-align:center; margin-bottom: 20px;">Требования к качеству</h3>
+      <ul style="list-style:none; padding-left:0; margin-bottom:30px;">
+        <li>🔧 Надежные и проверенные материалы</li>
+        <li>📏 Точное соответствие размерам и заявленным характеристикам</li>
+        <li>🧼 Аккуратная установка без повреждений</li>
+      </ul>
+
+      <h3 style="text-align:center; margin-bottom: 20px;">Пользовательский интерфейс</h3>
+      <ul style="list-style:none; padding-left:0;">
+        <li>📱 Адаптивный под любые устройства</li>
+        <li>🎨 Простой, чистый и понятный дизайн</li>
+        <li>🚀 Быстрая загрузка и отзывчивость</li>
+      </ul>
+    </section>
+
+  </main>
+
+  <footer id="footer" style="text-align:center; padding:15px; background:#222; color:#eee;">
+    © 2025 WinDom. Все права защищены.
+  </footer>
+
+  <!-- Чат-бот -->
+  <div id="chat-bot">
+    <div id="chat-messages"></div>
+    <input type="text" id="chat-input" placeholder="Задайте вопрос..." />
+    <button onclick="sendMessage()">Отправить</button>
+  </div>
+
+  <script>
+    const chatMessages = document.getElementById('chat-messages');
+    const chatInput = document.getElementById('chat-input');
+
+    function appendMessage(text, fromBot = false) {
+      const msgDiv = document.createElement('div');
+      msgDiv.textContent = text;
+      msgDiv.style.margin = '8px 0';
+      msgDiv.style.padding = '8px';
+      msgDiv.style.borderRadius = '8px';
+      msgDiv.style.maxWidth = '80%';
+      msgDiv.style.wordWrap = 'break-word';
+      msgDiv.style.backgroundColor = fromBot ? '#0078d7' : '#eee';
+      msgDiv.style.color = fromBot ? 'white' : 'black';
+      msgDiv.style.alignSelf = fromBot ? 'flex-start' : 'flex-end';
+      msgDiv.style.marginLeft = fromBot ? '0' : 'auto';
+      chatMessages.appendChild(msgDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function sendMessage() {
+      const userText = chatInput.value.trim();
+      if (!userText) return;
+      appendMessage(userText, false);
+      chatInput.value = '';
+
+      // Пример простого ответа бота
+      setTimeout(() => {
+        let botReply = 'Извините, я пока не умею отвечать на этот вопрос.';
+        const userLower = userText.toLowerCase();
+        if (userLower.includes('цена')) botReply = 'Цены на окна указаны рядом с каждым товаром.';
+        else if (userLower.includes('доставка')) botReply = 'Доставка по Молдове бесплатная при заказе от 3 окон.';
+        else if (userLower.includes('замер')) botReply = 'Наш специалист свяжется с вами для бесплатного замера.';
+        else if (userLower.includes('спасибо')) botReply = 'Спасибо вам! Рады помочь!';
+        appendMessage(botReply, true);
+      }, 800);
+    }
+
+    // Отправка по Enter
+    chatInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+  </script>
+
+</body>
+</html>
+
+
+
