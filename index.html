@@ -143,6 +143,7 @@
         <button class="buy-btn" onclick="buyProduct('Балконный блок', 9990)">🛒 Купить</button>
       </div>
     </section>
+
 <button onclick="showCart()" style="
   position: fixed;
   bottom: 80px;
@@ -188,27 +189,33 @@
     font-weight: bold;
   ">✖ Закрыть</button>
 </div>
-</button>
 
 <script>
+  // Инициализация массива для корзины
+  let cart = [];
 
+  // Функция для добавления товара в корзину
   function buyProduct(name, price) {
     cart.push({ name, price });
-    updateCartCount();
-    renderCart();
-    alert(`🛒 ${name} добавлен в корзину за ${price} ₽`);
+    updateCartCount(); // Обновляем счетчик на иконке
+    renderCart(); // Перерисовываем корзину
+    alert(`🛒 ${name} добавлен в корзину за ${price} ₽`); // Показать уведомление
   }
 
+  // Функция для обновления счетчика на кнопке корзины
   function updateCartCount() {
-    // можно добавить счетчик, если он будет на иконке
+    const cartCount = cart.length; // Получаем количество товаров в корзине
+    const cartButton = document.querySelector('button[onclick="showCart()"]');
+    cartButton.innerText = `🛒 ${cartCount}`; // Обновляем текст на кнопке
   }
 
+  // Функция для отрисовки содержимого корзины
   function renderCart() {
     const cartItemsEl = document.getElementById('cart-items');
     const cartTotalEl = document.getElementById('cart-total');
     if (!cartItemsEl || !cartTotalEl) return;
 
-    cartItemsEl.innerHTML = '';
+    cartItemsEl.innerHTML = ''; // Очищаем текущие элементы корзины
     let total = 0;
 
     if (cart.length === 0) {
@@ -217,6 +224,7 @@
       return;
     }
 
+    // Добавляем товары в корзину
     cart.forEach((item, index) => {
       total += item.price;
       const itemEl = document.createElement('div');
@@ -231,45 +239,83 @@
       cartItemsEl.appendChild(itemEl);
     });
 
-    cartTotalEl.textContent = `Итого: ${total} ₽`;
+    cartTotalEl.textContent = `Итого: ${total} ₽`; // Обновляем итоговую сумму
   }
 
+  // Функция для удаления товара из корзины
   function removeFromCart(index) {
-    cart.splice(index, 1);
-    renderCart();
+    cart.splice(index, 1); // Удаляем товар по индексу
+    renderCart(); // Перерисовываем корзину
+    updateCartCount(); // Обновляем счетчик на иконке
   }
 
+  // Функция для отображения корзины
   function showCart() {
     const cartWindow = document.getElementById('cart-window');
-    cartWindow.style.display = 'block';
-    renderCart();
+    cartWindow.style.display = 'block'; // Показываем окно корзины
+    renderCart(); // Отображаем содержимое корзины
   }
 
+  // Функция для закрытия корзины
   function closeCart() {
     const cartWindow = document.getElementById('cart-window');
-    cartWindow.style.display = 'none';
+    cartWindow.style.display = 'none'; // Прячем окно корзины
   }
 </script>
 
-  <form onsubmit="event.preventDefault(); alert('✅ Заявка отправлена! Мы с вами свяжемся.');">
-  <h2>Оставить заявку</h2>
-  <input type="text" placeholder="Ваше имя" required />
-  <input type="tel" placeholder="Телефон" required />
-  <button type="submit">Получить консультацию</button>
-</form>
+<section class="contact-form" style="max-width: 700px; margin: 50px auto; padding: 30px; background-color: #f4f4f4; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+  <h2 style="text-align:center; font-size: 24px; margin-bottom: 20px;">Оставить заявку</h2>
+  <div style="margin-bottom: 15px;">
+    <input type="text" id="name" placeholder="Ваше имя" required style="width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #ccc; font-size: 18px; box-sizing: border-box;">
+  </div>
+  <div style="margin-bottom: 15px;">
+<form id="myForm">
 
+<input type="tel" 
+       id="phone" 
+       placeholder="Телефон (+373...)"
+       required
+       pattern="^\+?[0-9]{1,4}[-.\s]?[0-9]{1,4}[-.\s]?[0-9]{1,4}[-.\s]?[0-9]{1,4}$" 
+       style="width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #ccc; font-size: 18px; box-sizing: border-box;"/>
+
+
+  <button type="submit" onclick="submitForm(event)" style="width: 100%; padding: 15px; background: #28a745; color: white; border: none; border-radius: 8px; font-size: 20px; cursor: pointer; transition: background-color 0.3s ease-in-out;">Получить консультацию</button>
+</section>
+
+<script>
+  function submitForm(event) {
+    event.preventDefault();  // Предотвращаем стандартное отправление формы
+
+  // Проверка на валидность телефона
+const phonePattern = /^\+?[0-9]{1,4}[-.\s]?[0-9]{1,4}[-.\s]?[0-9]{1,4}[-.\s]?[0-9]{1,4}$/;
+
+const phone = document.getElementById('phone').value;
+
+if (!phone.match(phonePattern)) {
+  alert('❌ Пожалуйста, введите корректный номер телефона.');
+  return;
+}
+
+  
+    // Если всё правильно, форма будет отправлена
+    alert('✅ Заявка отправлена! Мы с вами свяжемся.');
+    
+    // Очистка формы после отправки
+    document.getElementById('myForm').reset();
+  }
+</script>
 
     <div class="messenger-links" style="padding:20px; font-size:16px;">
-      <p><a href="https://t.me/твой_юзернейм" target="_blank">Telegram</a> — +37377877934</p>
+      <p><a href="https://t.me/+37377877934" target="_blank">Telegram</a> — +37377877934</p>
       <p><a href="viber://chat?number=+37377877934" target="_blank">Viber</a> — +37377877934</p>
     </div>
 
-    <section class="contact-form">
-      <div class="review-form" style="background: rgba(0,0,0,0.7); color: white; padding: 30px; border-radius: 20px; max-width: 700px; margin: 50px auto; text-align:center;">
+  <section class="contact-form">
+    <div class="review-form" style="background: rgba(0,0,0,0.7); color: white; padding: 30px; border-radius: 20px; max-width: 700px; margin: 50px auto; text-align:center;">
         <h3>Оставьте отзыв о нашей работе</h3>
-        <input type="text" placeholder="Ваше имя" required style="width:90%; padding:15px; margin:15px 0; border-radius:10px; border:none; font-size:18px;" />
-        <textarea placeholder="Ваш отзыв..." rows="6" required style="width:90%; padding:15px; margin:15px 0; border-radius:10px; border:none; font-size:18px; resize:none;"></textarea>
-        <select style="width:90%; padding:15px; margin:15px 0; border-radius:10px; font-size:18px;">
+        <input type="text" id="review-name" placeholder="Ваше имя" required style="width:90%; padding:15px; margin:15px 0; border-radius:10px; border:none; font-size:18px;" />
+        <textarea id="review-text" placeholder="Ваш отзыв..." rows="6" required style="width:90%; padding:15px; margin:15px 0; border-radius:10px; border:none; font-size:18px; resize:none;"></textarea>
+        <select id="review-rating" style="width:90%; padding:15px; margin:15px 0; border-radius:10px; font-size:18px;">
           <option disabled selected>Оцените нас</option>
           <option>⭐⭐⭐⭐⭐ Отлично</option>
           <option>⭐⭐⭐⭐ Хорошо</option>
@@ -277,26 +323,80 @@
           <option>⭐⭐ Плохо</option>
           <option>⭐ Ужасно</option>
         </select>
-    <button onclick="submitReview()" style="
-  background: #00cc88;
-  color: white;
-  font-size: 20px;
-  padding: 16px 32px;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  margin-top: 20px;
-  font-weight: bold;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  transition: background 0.3s;
-">
-  ✅ Отправить отзыв
-</button>
+        <button onclick="submitReview()" style="
+          background: #00cc88;
+          color: white;
+          font-size: 20px;
+          padding: 16px 32px;
+          border: none;
+          border-radius: 12px;
+          cursor: pointer;
+          margin-top: 20px;
+          font-weight: bold;
+          box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+          transition: background 0.3s;
+        ">
+          ✅ Отправить отзыв
+        </button>
+    </div>
+</section>
+
+<script>
+  function submitReview() {
+    const name = document.getElementById('review-name').value;
+    const text = document.getElementById('review-text').value;
+    const rating = document.getElementById('review-rating').value;
+
+    // Проверка на наличие данных
+    if (!name || !text || !rating || rating === "Оцените нас") {
+      alert('❌ Пожалуйста, заполните все поля!');
+      return;
+    }
+
+    // Здесь можно отправить данные на сервер, например, через fetch или XMLHttpRequest
+    // Пример с fetch:
+    /*
+    fetch('/submit-review', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name, text, rating })
+    })
+    .then(response => response.json())
+    .then(data => {
+      alert('✅ Отзыв отправлен! Спасибо за ваш отзыв.');
+      // Очистка формы после отправки
+      document.querySelector('.review-form').reset();
+    })
+    .catch(error => {
+      alert('❌ Произошла ошибка при отправке отзыва.');
+    });
+    */
+
+    // Для демонстрации просто показываем сообщение
+    alert('✅ Отзыв отправлен! Спасибо за ваш отзыв.');
+
+    // Очистка формы после отправки
+    document.getElementById('review-name').value = '';
+    document.getElementById('review-text').value = '';
+    document.getElementById('review-rating').value = 'Оцените нас';
+  }
+</script>
 
       </div>
 
-      <h3 style="text-align:center; margin-top:50px;">Мы на карте</h3>
-      <iframe src="https://www.google.com/maps/embed?pb=..." width="100%" height="300" style="border:0;" allowfullscreen></iframe>
+<iframe 
+  width="100%" 
+  height="400" 
+  style="border:0; border-radius:10px;" 
+  loading="lazy" 
+  allowfullscreen 
+  referrerpolicy="no-referrer-when-downgrade"
+  src="https://www.google.com/maps?q=46.817576,29.472179&hl=ru&z=15&output=embed">
+</iframe>
+
+
 
       <div class="faq" style="max-width: 700px; margin: 40px auto;">
         <h2>Часто задаваемые вопросы</h2>
@@ -348,7 +448,7 @@
   </div>
 </div>
 
-<button onclick="window.scrollTo({ top: 0, behavior: 'smooth' });" 
+<button id="to-top" onclick="window.scrollTo({ top: 0, behavior: 'smooth' });" 
         class="to-top" 
         style="
           position: fixed; 
@@ -367,6 +467,21 @@
         ">
   ↑ Наверх
 </button>
+
+<script>
+  const toTopButton = document.getElementById('to-top');
+
+  // Функция для отображения кнопки, когда страница прокручена вниз
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 200) {
+      toTopButton.style.opacity = '1';
+      toTopButton.style.pointerEvents = 'auto';  // Включаем кликабельность
+    } else {
+      toTopButton.style.opacity = '0';
+      toTopButton.style.pointerEvents = 'none';  // Отключаем кликабельность
+    }
+  });
+</script>
 
 
 <script>
@@ -396,15 +511,31 @@
       messages.scrollTop = messages.scrollHeight;
 
       // Пример автоответа
+      const responses = {
+        "привет": "Привет! Чем могу помочь?",
+        "цена": "Наши окна от 6990 рублей. Актуальные цены на главной странице.",
+        "доставка": "Доставка по Приднестровью — бесплатно при заказе от 2-х окон.",
+        "гарантия": "Гарантия на окна — 5 лет. Подробнее в разделе 'Справка'.",
+        "поддержка": "Вы можете написать нам в разделе 'Поддержка'.",
+        "регистрация": "Чтобы зарегистрироваться, нажмите на регистрацию"
+      };
+
+      let replyText = "🤖 Извините, я не понял ваш запрос.";
+
+      // Проверка на наличие вопроса в объекте и выбор ответа
+      for (const key in responses) {
+        if (text.toLowerCase().includes(key)) {
+          replyText = "🤖 " + responses[key];
+          break;
+        }
+      }
+
+      // Выводим автоответ
       const reply = document.createElement("div");
-      reply.textContent = "🤖 "привет": "Привет! Чем могу помочь?",
-    "цена": "Наши окна от 6990 рублей. Актуальные цены на главной странице.",
-    "доставка": "Доставка по Приднестровью — бесплатно при заказе от 2-х окон.",
-    "гарантия": "Гарантия на окна — 5 лет. Подробнее в разделе 'Справка'.",
-    "поддержка": "Вы можете написать нам в разделе 'Поддержка'.",
-    "регистрация": "Чтобы зарегистрироваться, нажмите на регистрацию",.";
+      reply.textContent = replyText;
       messages.appendChild(reply);
       messages.scrollTop = messages.scrollHeight;
     }
   }
 </script>
+
