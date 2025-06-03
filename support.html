@@ -1,25 +1,151 @@
+<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Поддержка</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Связь с поддержкой</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Общие стили */
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #0078d7;
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      margin: 0;
+    }
+
+    main {
+      padding: 40px 20px;
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    input, textarea {
+      padding: 12px;
+      margin: 12px 0;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      background-color: #f9f9f9;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #0078d7;
+      outline: none;
+    }
+
+    button {
+      padding: 15px;
+      background-color: #0078d7;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .back-button {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .back-button a {
+      display: inline-block;
+      padding: 12px 30px;
+      background-color: #28a745;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .back-button a:hover {
+      background-color: #218838;
+    }
+
+    /* Мобильная адаптация */
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2rem;
+      }
+
+      main {
+        padding: 20px;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
+
   <header>
     <h1>Связь с поддержкой</h1>
   </header>
+
   <main>
-    <form>
-      <input type="text" placeholder="Имя" required>
-      <input type="email" placeholder="Email" required>
-      <textarea placeholder="Ваш вопрос" rows="5" required></textarea>
+    <p>Если у вас возникли вопросы или проблемы, заполните форму ниже, и наша служба поддержки свяжется с вами в ближайшее время.</p>
+    
+    <form id="support-form">
+      <input type="text" id="name" placeholder="Имя" required>
+      <input type="email" id="email" placeholder="Email" required>
+      <textarea id="message" placeholder="Ваш вопрос" rows="5" required></textarea>
       <button type="submit">Отправить</button>
     </form>
   </main>
+
+  <div class="back-button">
+    <a href="index.html">← Назад на главную</a>
+  </div>
+
+  <script>
+    // Обработчик отправки формы
+    document.getElementById('support-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message').value;
+
+      if (name && email && message) {
+        alert('Ваше сообщение отправлено! Мы свяжемся с вами в ближайшее время.');
+        // Можно отправить данные на сервер с помощью AJAX или Fetch API
+        // Сбросить поля после отправки
+        document.getElementById('support-form').reset();
+      } else {
+        alert('Пожалуйста, заполните все поля.');
+      }
+    });
+  </script>
+
 </body>
 </html>
-<div style="text-align: center; margin-top: 30px;">
-  <a href="index.html" style="display: inline-block; padding: 10px 20px; background: #0078d7; color: white; text-decoration: none; border-radius: 8px; font-weight: bold;">
-    ← Назад на главную
-  </a>
-</div>
