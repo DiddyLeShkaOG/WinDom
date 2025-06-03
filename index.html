@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script defer src="script.js"></script>
   <style>
+    /* Чат-бот стили */
     #chat-bot {
       position: fixed;
       bottom: 20px;
@@ -112,6 +113,9 @@
       <a href="register.html">Регистрация</a>
       <a href="about.html">О нас</a>
     </nav>
+<div style="margin-top: 20px;">
+  <input type="text" id="productSearch" placeholder="🔍 Поиск товаров..." style="padding: 10px; width: 250px; border-radius: 8px; border: 1px solid #ccc;">
+</div>
   </header>
 
   <main>
@@ -139,38 +143,121 @@
         <button class="buy-btn" onclick="buyProduct('Балконный блок', 9990)">🛒 Купить</button>
       </div>
     </section>
-    <button onclick="showCart()" style="position: fixed; bottom: 80px; right: 20px; background: #28a745; color: white; padding: 10px 15px; border-radius: 6px; border: none;       cursor: pointer; z-index: 10000;">🧾 Корзина</button>
+<button onclick="showCart()" style="
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 10000;
+">🛒</button>
+
+<div id="cart-window" style="
+  display: none;
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+  width: 320px;
+  max-height: 400px;
+  background: white;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+  padding: 15px;
+  overflow-y: auto;
+  z-index: 10001;
+  font-family: Arial, sans-serif;
+">
+  <h4 style="margin-top:0;">🛒 Ваша корзина</h4>
+  <div id="cart-items" style="margin-bottom: 10px;"></div>
+  <strong id="cart-total" style="display:block; margin-bottom: 10px;"></strong>
+  <button onclick="closeCart()" style="
+    width: 100%;
+    padding: 10px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+  ">✖ Закрыть</button>
+</div>
+</button>
+
 <script>
-  const cart = [];
 
   function buyProduct(name, price) {
     cart.push({ name, price });
+    updateCartCount();
+    renderCart();
     alert(`🛒 ${name} добавлен в корзину за ${price} ₽`);
-    console.log('Товары в корзине:', cart);
+  }
+
+  function updateCartCount() {
+    // можно добавить счетчик, если он будет на иконке
+  }
+
+  function renderCart() {
+    const cartItemsEl = document.getElementById('cart-items');
+    const cartTotalEl = document.getElementById('cart-total');
+    if (!cartItemsEl || !cartTotalEl) return;
+
+    cartItemsEl.innerHTML = '';
+    let total = 0;
+
+    if (cart.length === 0) {
+      cartItemsEl.innerHTML = '<p>Корзина пуста.</p>';
+      cartTotalEl.textContent = '';
+      return;
+    }
+
+    cart.forEach((item, index) => {
+      total += item.price;
+      const itemEl = document.createElement('div');
+      itemEl.style.display = 'flex';
+      itemEl.style.justifyContent = 'space-between';
+      itemEl.style.marginBottom = '6px';
+
+      itemEl.innerHTML = `
+        <span>${item.name} — ${item.price} ₽</span>
+        <button onclick="removeFromCart(${index})" style="background:#dc3545; color:white; border:none; border-radius:4px; cursor:pointer;">✖</button>
+      `;
+      cartItemsEl.appendChild(itemEl);
+    });
+
+    cartTotalEl.textContent = `Итого: ${total} ₽`;
+  }
+
+  function removeFromCart(index) {
+    cart.splice(index, 1);
+    renderCart();
   }
 
   function showCart() {
-    if (cart.length === 0) {
-      alert('🧺 Ваша корзина пуста.');
-      return;
-    }
-    let text = '🧾 Ваша корзина:\n\n';
-    let total = 0;
-    cart.forEach((item, i) => {
-      text += `${i + 1}) ${item.name} — ${item.price} ₽\n`;
-      total += item.price;
-    });
-    text += `\n💰 Итого: ${total} ₽`;
-    alert(text);
+    const cartWindow = document.getElementById('cart-window');
+    cartWindow.style.display = 'block';
+    renderCart();
+  }
+
+  function closeCart() {
+    const cartWindow = document.getElementById('cart-window');
+    cartWindow.style.display = 'none';
   }
 </script>
 
-    <form>
-      <h2>Оставить заявку</h2>
-      <input type="text" placeholder="Ваше имя" required />
-      <input type="tel" placeholder="Телефон" required />
-      <button type="submit">Получить консультацию</button>
-    </form>
+  <form onsubmit="event.preventDefault(); alert('✅ Заявка отправлена! Мы с вами свяжемся.');">
+  <h2>Оставить заявку</h2>
+  <input type="text" placeholder="Ваше имя" required />
+  <input type="tel" placeholder="Телефон" required />
+  <button type="submit">Получить консультацию</button>
+</form>
+
 
     <div class="messenger-links" style="padding:20px; font-size:16px;">
       <p><a href="https://t.me/твой_юзернейм" target="_blank">Telegram</a> — +37377877934</p>
@@ -190,7 +277,22 @@
           <option>⭐⭐ Плохо</option>
           <option>⭐ Ужасно</option>
         </select>
-        <button style="background:#00cc88; color:white; font-size:20px; padding:14px 30px; border:none; border-radius:12px; cursor:pointer; margin-top:15px; transition: background 0.3s;">Отправить отзыв</button>
+    <button onclick="submitReview()" style="
+  background: #00cc88;
+  color: white;
+  font-size: 20px;
+  padding: 16px 32px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 20px;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: background 0.3s;
+">
+  ✅ Отправить отзыв
+</button>
+
       </div>
 
       <h3 style="text-align:center; margin-top:50px;">Мы на карте</h3>
@@ -208,8 +310,6 @@
         </div>
       </div>
     </section>
-
-    <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' });" class="to-top" style="position: fixed; bottom: 20px; right: 20px; background: black; color: white; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-size: 18px; z-index: 10000;">↑ Наверх</button>
 
     <section class="quality-ui" style="max-width: 800px; margin: 50px auto; padding: 30px; background-color: rgba(0,0,0,0.7); color: white; border-radius: 20px; font-size: 18px;">
       <h3 style="text-align:center; margin-bottom: 20px;">Требования к качеству</h3>
@@ -248,3 +348,63 @@
   </div>
 </div>
 
+<button onclick="window.scrollTo({ top: 0, behavior: 'smooth' });" 
+        class="to-top" 
+        style="
+          position: fixed; 
+          bottom: 20px; 
+          right: 20px; 
+          background: black; 
+          color: white; 
+          padding: 10px 15px; 
+          border-radius: 8px; 
+          cursor: pointer; 
+          font-size: 18px; 
+          z-index: 10000;
+          opacity: 0; 
+          pointer-events: none;
+          transition: opacity 0.3s ease-in-out;
+        ">
+  ↑ Наверх
+</button>
+
+
+<script>
+  const chatBot = document.getElementById('chat-bot');
+  const reopenBtn = document.getElementById('reopen-chat');
+  const closeBtn = document.getElementById('chat-close');
+
+  reopenBtn.addEventListener('click', () => {
+    chatBot.style.display = 'block';
+    reopenBtn.style.display = 'none';
+  });
+
+  closeBtn.addEventListener('click', () => {
+    chatBot.style.display = 'none';
+    reopenBtn.style.display = 'block';
+  });
+
+  function sendMessage() {
+    const input = document.getElementById("chat-input");
+    const messages = document.getElementById("chat-messages");
+    const text = input.value.trim();
+    if (text !== "") {
+      const msg = document.createElement("div");
+      msg.textContent = "👤 " + text;
+      messages.appendChild(msg);
+      input.value = "";
+      messages.scrollTop = messages.scrollHeight;
+
+      // Пример автоответа
+      const reply = document.createElement("div");
+      reply.textContent = "🤖 "привет": "Привет! Чем могу помочь?",
+    "цена": "Наши окна от 6990 рублей. Актуальные цены на главной странице.",
+    "доставка": "Доставка по Приднестровью — бесплатно при заказе от 2-х окон.",
+    "гарантия": "Гарантия на окна — 5 лет. Подробнее в разделе 'Справка'.",
+    "поддержка": "Вы можете написать нам в разделе 'Поддержка'.",
+    "регистрация": "Чтобы зарегистрироваться, нажмите на регистрацию",.";
+      messages.appendChild(reply);
+      messages.scrollTop = messages.scrollHeight;
+    }
+  }
+</script>
