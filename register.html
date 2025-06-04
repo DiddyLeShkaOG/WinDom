@@ -2,8 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>Регистрация | WinDom</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Регистрация и Вход | WinDom</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     /* Общие стили */
@@ -15,70 +14,94 @@
 
     body {
       font-family: 'Arial', sans-serif;
-      background-color: #f4f4f4;
+      background: linear-gradient(135deg, #0078d7, #00cc88);
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
       color: #333;
+      padding: 20px;
+    }
+
+    .container {
+      background: #fff;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 450px;
     }
 
     h1 {
       font-size: 2.5rem;
       color: #333;
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
+      user-select: none;
     }
 
-    .register-form {
-      background: #fff;
-      padding: 40px;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 400px;
-    }
-
-    .register-form label {
+    label {
       font-size: 1rem;
       margin-bottom: 8px;
       display: block;
       color: #555;
     }
 
-    .register-form input {
+    input {
       width: 100%;
       padding: 12px;
       margin-bottom: 20px;
       border: 1px solid #ccc;
-      border-radius: 5px;
+      border-radius: 6px;
       font-size: 1rem;
-      transition: all 0.3s ease;
+      transition: border-color 0.3s ease;
     }
 
-    .register-form input:focus {
+    input:focus {
       border-color: #0078d7;
       outline: none;
     }
 
-    .register-form button {
+    button {
       width: 100%;
-      padding: 12px;
+      padding: 14px;
       background-color: #0078d7;
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 6px;
       font-size: 1.1rem;
       cursor: pointer;
+      font-weight: bold;
       transition: background-color 0.3s ease;
+      user-select: none;
     }
 
-    .register-form button:hover {
+    button:hover {
       background-color: #005bb5;
     }
 
-    .register-form button:active {
+    button:active {
       background-color: #004085;
+    }
+
+    .toggle-btns {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 25px;
+      gap: 20px;
+    }
+
+    .toggle-btns button {
+      width: auto;
+      padding: 10px 25px;
+      font-size: 1rem;
+      background-color: #00cc88;
+    }
+
+    .toggle-btns button.active {
+      background-color: #0078d7;
+      color: white;
+      cursor: default;
     }
 
     .back-button {
@@ -88,87 +111,179 @@
 
     .back-button a {
       display: inline-block;
-      padding: 10px 20px;
+      padding: 10px 25px;
       background: #28a745;
       color: white;
       text-decoration: none;
       border-radius: 8px;
       font-weight: bold;
       transition: background 0.3s ease;
+      user-select: none;
     }
 
     .back-button a:hover {
       background: #218838;
     }
 
-    /* Mobile responsiveness */
-    @media (max-width: 768px) {
-      .register-form {
-        padding: 20px;
-      }
-
-      .register-form button {
-        font-size: 1rem;
+    @media (max-width: 500px) {
+      .container {
+        padding: 30px 20px;
       }
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Регистрация</h1>
-  </header>
-  <main>
-    <form class="register-form" novalidate id="register-form">
-      <label for="username">Имя пользователя</label>
+  <div class="container">
+    <h1 id="form-title">Регистрация</h1>
+
+    <div class="toggle-btns">
+      <button id="show-register" class="active">Регистрация</button>
+      <button id="show-login">Вход</button>
+    </div>
+
+    <!-- Форма регистрации -->
+    <form id="register-form" novalidate>
+      <label for="reg-username">Имя пользователя</label>
       <input
-        id="username"
+        id="reg-username"
         type="text"
         placeholder="Введите имя пользователя"
         required
         pattern="^[a-zA-Z0-9_]{3,20}$"
-        title="Имя пользователя должно содержать от 3 до 20 символов и может включать только буквы, цифры и подчеркивания."
+        title="От 3 до 20 символов, буквы, цифры, подчеркивания."
       />
 
-      <label for="password">Пароль</label>
+      <label for="reg-password">Пароль</label>
       <input
-        id="password"
+        id="reg-password"
         type="password"
         placeholder="Введите пароль"
         required
         minlength="6"
-        title="Пароль должен содержать минимум 6 символов."
+        title="Минимум 6 символов."
       />
 
       <button type="submit">Зарегистрироваться</button>
     </form>
-  </main>
 
-  <div class="back-button">
-    <a href="index.html">← Назад на главную</a>
+    <!-- Форма входа -->
+    <form id="login-form" novalidate style="display:none;">
+      <label for="login-username">Имя пользователя</label>
+      <input
+        id="login-username"
+        type="text"
+        placeholder="Введите имя пользователя"
+        required
+      />
+
+      <label for="login-password">Пароль</label>
+      <input
+        id="login-password"
+        type="password"
+        placeholder="Введите пароль"
+        required
+      />
+
+      <button type="submit">Войти</button>
+    </form>
+
+    <div class="back-button">
+      <a href="index.html">← Назад на главную</a>
+    </div>
   </div>
 
   <script>
-    // Обработчик для формы регистрации
-    const form = document.getElementById('register-form');
+    // Элементы переключения форм
+    const showRegisterBtn = document.getElementById('show-register');
+    const showLoginBtn = document.getElementById('show-login');
+    const registerForm = document.getElementById('register-form');
+    const loginForm = document.getElementById('login-form');
+    const formTitle = document.getElementById('form-title');
 
-    form.addEventListener('submit', function(event) {
-      event.preventDefault();
+    // Показать форму регистрации
+    function showRegister() {
+      registerForm.style.display = 'block';
+      loginForm.style.display = 'none';
+      formTitle.textContent = 'Регистрация';
+      showRegisterBtn.classList.add('active');
+      showLoginBtn.classList.remove('active');
+    }
 
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
+    // Показать форму входа
+    function showLogin() {
+      registerForm.style.display = 'none';
+      loginForm.style.display = 'block';
+      formTitle.textContent = 'Вход';
+      showLoginBtn.classList.add('active');
+      showRegisterBtn.classList.remove('active');
+    }
+
+    showRegisterBtn.addEventListener('click', showRegister);
+    showLoginBtn.addEventListener('click', showLogin);
+
+    // Работа с регистрацией
+    registerForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const username = document.getElementById('reg-username').value.trim();
+      const password = document.getElementById('reg-password').value.trim();
 
       if (!username || !password) {
         alert('Пожалуйста, заполните все поля!');
         return;
       }
 
-      // Здесь можно добавить код для отправки данных на сервер
-      alert('Вы успешно зарегистрировались!');
-      
-      // Очищаем форму
-      form.reset();
+      if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
+        alert('Имя пользователя должно содержать от 3 до 20 символов и может включать только буквы, цифры и подчеркивания.');
+        return;
+      }
+
+      if (password.length < 6) {
+        alert('Пароль должен содержать минимум 6 символов.');
+        return;
+      }
+
+      // Проверяем, есть ли такой пользователь
+      let users = JSON.parse(localStorage.getItem('users')) || [];
+      const userExists = users.some(u => u.username.toLowerCase() === username.toLowerCase());
+
+      if (userExists) {
+        alert('Пользователь с таким именем уже существует!');
+        return;
+      }
+
+      // Добавляем нового пользователя
+      users.push({ username, password });
+      localStorage.setItem('users', JSON.stringify(users));
+
+      alert('Вы успешно зарегистрировались! Теперь можете войти.');
+      registerForm.reset();
+      showLogin();
+    });
+
+    // Работа с входом
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const username = document.getElementById('login-username').value.trim();
+      const password = document.getElementById('login-password').value.trim();
+
+      if (!username || !password) {
+        alert('Пожалуйста, заполните все поля!');
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+      const user = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
+
+      if (user) {
+        alert('Вы успешно вошли!');
+        // Переадресация на главную страницу
+        window.location.href = 'index.html';
+      } else {
+        alert('Неверное имя пользователя или пароль.');
+      }
     });
   </script>
 </body>
 </html>
-
