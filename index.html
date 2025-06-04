@@ -273,7 +273,7 @@
 
 <input type="tel" 
        id="phone" 
-       placeholder="Телефон (+373...)"
+       placeholder="Телефон"
        required
        pattern="^\+?[0-9]{1,4}[-.\s]?[0-9]{1,4}[-.\s]?[0-9]{1,4}[-.\s]?[0-9]{1,4}$" 
        style="width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #ccc; font-size: 18px; box-sizing: border-box;"/>
@@ -294,9 +294,7 @@ const phone = document.getElementById('phone').value;
 if (!phone.match(phonePattern)) {
   alert('❌ Пожалуйста, введите корректный номер телефона.');
   return;
-}
-
-  
+} 
     // Если всё правильно, форма будет отправлена
     alert('✅ Заявка отправлена! Мы с вами свяжемся.');
     
@@ -305,84 +303,140 @@ if (!phone.match(phonePattern)) {
   }
 </script>
 
+
     <div class="messenger-links" style="padding:20px; font-size:16px;">
       <p><a href="https://t.me/+37377877934" target="_blank">Telegram</a> — +37377877934</p>
       <p><a href="viber://chat?number=+37377877934" target="_blank">Viber</a> — +37377877934</p>
     </div>
 
-  <section class="contact-form">
-    <div class="review-form" style="background: rgba(0,0,0,0.7); color: white; padding: 30px; border-radius: 20px; max-width: 700px; margin: 50px auto; text-align:center;">
-        <h3>Оставьте отзыв о нашей работе</h3>
-        <input type="text" id="review-name" placeholder="Ваше имя" required style="width:90%; padding:15px; margin:15px 0; border-radius:10px; border:none; font-size:18px;" />
-        <textarea id="review-text" placeholder="Ваш отзыв..." rows="6" required style="width:90%; padding:15px; margin:15px 0; border-radius:10px; border:none; font-size:18px; resize:none;"></textarea>
-        <select id="review-rating" style="width:90%; padding:15px; margin:15px 0; border-radius:10px; font-size:18px;">
-          <option disabled selected>Оцените нас</option>
-          <option>⭐⭐⭐⭐⭐ Отлично</option>
-          <option>⭐⭐⭐⭐ Хорошо</option>
-          <option>⭐⭐⭐ Нормально</option>
-          <option>⭐⭐ Плохо</option>
-          <option>⭐ Ужасно</option>
-        </select>
-        <button onclick="submitReview()" style="
-          background: #00cc88;
-          color: white;
-          font-size: 20px;
-          padding: 16px 32px;
-          border: none;
-          border-radius: 12px;
-          cursor: pointer;
-          margin-top: 20px;
-          font-weight: bold;
-          box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-          transition: background 0.3s;
-        ">
-          ✅ Отправить отзыв
-        </button>
-    </div>
+<section class="form-section">
+
+  <section class="contact-form" style="max-width: 700px; margin: 50px auto; padding: 30px; background-color: #f4f4f4; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+    <h2 style="text-align:center; font-size: 24px; margin-bottom: 20px;">Форма обратной связи</h2>
+    <form id="feedbackForm" onsubmit="submitFeedback(event)">
+      <input 
+        type="text" 
+        id="userName" 
+        name="userName" 
+        placeholder="Ваше имя" 
+        required 
+        style="width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #ccc; font-size: 18px; box-sizing: border-box; margin-bottom: 15px;" 
+      />
+      
+      <input 
+        type="email" 
+        id="userEmail" 
+        name="userEmail" 
+        placeholder="Email" 
+        required 
+        style="width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #ccc; font-size: 18px; box-sizing: border-box; margin-bottom: 15px;" 
+      />
+      
+      <input 
+        type="tel" 
+        id="userPhone" 
+        name="userPhone" 
+        placeholder="Телефон" 
+        required 
+        pattern="^\+?\d{6,15}$" 
+        style="width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #ccc; font-size: 18px; box-sizing: border-box; margin-bottom: 15px;" 
+      />
+      
+      <textarea 
+        id="userMessage" 
+        name="userMessage" 
+        placeholder="Сообщение" 
+        rows="5" 
+        required 
+        style="width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #ccc; font-size: 18px; box-sizing: border-box; margin-bottom: 15px; resize: vertical;"
+      ></textarea>
+      
+      <button 
+        type="submit" 
+        style="width: 100%; padding: 15px; background: #28a745; color: white; border: none; border-radius: 8px; font-size: 20px; cursor: pointer; transition: background-color 0.3s ease-in-out;"
+      >
+        Отправить
+      </button>
+    </form>
+    <div id="form-status" aria-live="polite" style="margin-top: 15px; font-size: 16px; text-align: center;"></div>
+  </section>
+
 </section>
 
 <script>
-  function submitReview() {
-    const name = document.getElementById('review-name').value;
-    const text = document.getElementById('review-text').value;
-    const rating = document.getElementById('review-rating').value;
+  // Регулярное выражение для проверки Email
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    // Проверка на наличие данных
-    if (!name || !text || !rating || rating === "Оцените нас") {
-      alert('❌ Пожалуйста, заполните все поля!');
+  // Добавляем обработчик на поле Email для проверки при потере фокуса
+  document.addEventListener('DOMContentLoaded', () => {
+    const userEmail = document.querySelector('#userEmail');
+    const statusDiv = document.getElementById('form-status');
+    
+    userEmail.addEventListener('blur', () => {
+      if (userEmail.value.trim() !== '' && !emailPattern.test(userEmail.value.trim())) {
+        statusDiv.textContent = "❌ Введите корректный Email";
+        statusDiv.style.color = "red";
+      } else {
+        // Очищаем сообщение, если все ок
+        statusDiv.textContent = '';
+      }
+    });
+  });
+
+  async function submitFeedback(event) {
+    event.preventDefault();
+
+    const form = document.getElementById('feedbackForm');
+    const statusDiv = document.getElementById('form-status');
+    const submitButton = form.querySelector('button');
+
+    const name = form.userName.value.trim();
+    const email = form.userEmail.value.trim();
+    const phone = form.userPhone.value.trim();
+    const message = form.userMessage.value.trim();
+
+    // Валидация
+    if (name.length < 2) {
+      statusDiv.textContent = "❌ Имя должно быть не менее 2 символов";
+      statusDiv.style.color = "red";
       return;
     }
 
-    // Здесь можно отправить данные на сервер, например, через fetch или XMLHttpRequest
-    // Пример с fetch:
-    /*
-    fetch('/submit-review', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ name, text, rating })
-    })
-    .then(response => response.json())
-    .then(data => {
-      alert('✅ Отзыв отправлен! Спасибо за ваш отзыв.');
-      // Очистка формы после отправки
-      document.querySelector('.review-form').reset();
-    })
-    .catch(error => {
-      alert('❌ Произошла ошибка при отправке отзыва.');
-    });
-    */
+    if (!emailPattern.test(email)) {
+      statusDiv.textContent = "❌ Введите корректный Email";
+      statusDiv.style.color = "red";
+      return;
+    }
 
-    // Для демонстрации просто показываем сообщение
-    alert('✅ Отзыв отправлен! Спасибо за ваш отзыв.');
+    const phonePattern = /^\+?\d{6,15}$/;
+    if (!phonePattern.test(phone)) {
+      statusDiv.textContent = "❌ Пожалуйста, введите корректный номер телефона.";
+      statusDiv.style.color = "red";
+      return;
+    }
 
-    // Очистка формы после отправки
-    document.getElementById('review-name').value = '';
-    document.getElementById('review-text').value = '';
-    document.getElementById('review-rating').value = 'Оцените нас';
+    if (message.length < 5) {
+      statusDiv.textContent = "❌ Сообщение должно быть не менее 5 символов";
+      statusDiv.style.color = "red";
+      return;
+    }
+
+    // Блокируем кнопку и показываем статус отправки
+    submitButton.disabled = true;
+    submitButton.textContent = "Отправка...";
+    statusDiv.textContent = "⏳ Отправка...";
+    statusDiv.style.color = "black";
+
+    // Здесь можно сделать реальный запрос к серверу через fetch, пока имитируем отправку
+    setTimeout(() => {
+      statusDiv.textContent = "✅ Спасибо за вашу заявку! Мы скоро с вами свяжемся.";
+      statusDiv.style.color = "green";
+      submitButton.disabled = false;
+      submitButton.textContent = "Отправить";
+      form.reset();
+    }, 1500);
   }
-</script>
+    </script>
 
       </div>
 
@@ -538,4 +592,3 @@ if (!phone.match(phonePattern)) {
     }
   }
 </script>
-
